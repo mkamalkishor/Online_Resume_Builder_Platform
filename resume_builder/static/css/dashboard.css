@@ -1,0 +1,68 @@
+.dashboard-bg {
+    background: linear-gradient(135deg, #f8f9ff, #eef1ff);
+}
+
+.sidebar-link {
+    padding: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    transition: 0.2s;
+}
+
+.sidebar-link:hover {
+    background: #f0f4ff;
+    color: #0d6efd;
+}
+
+.stat-card {
+    border-radius: 14px;
+    transition: 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.resume-progress {
+    height: 8px;
+    border-radius: 20px;
+}
+
+.resume-card {
+    transition: all 0.25s ease;
+    border-radius: 14px;
+}
+
+.resume-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.resume-card img {
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+}
+
+.resume-glass {
+    backdrop-filter: blur(14px);
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: all 0.35s ease;
+}
+
+.resume-glass:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+}
+
+.resume-img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.resume-glass .card-body {
+    padding: 1.5rem;
+}

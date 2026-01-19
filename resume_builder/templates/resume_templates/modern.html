@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ resume.full_name }}</title>
+
+    <style>
+        body {
+            font-family: Helvetica;
+            font-size: 12px;
+            color: #111827;
+            margin: 0;
+            padding: 30px;
+            background: #ffffff;
+        }
+
+        /* HEADER */
+        .header {
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .name {
+            font-size: 30px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 4px;
+        }
+
+        .contact {
+            font-size: 11px;
+            color: #374151;
+        }
+
+        /* SECTION */
+        .section {
+            margin-top: 20px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2563eb;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 4px;
+            margin-bottom: 10px;
+        }
+
+        /* ITEMS */
+        .item {
+            margin-bottom: 10px;
+        }
+
+        .item-title {
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .small {
+            font-size: 11px;
+            color: #4b5563;
+        }
+
+        /* SKILLS */
+        .skills {
+            background: #f1f5f9;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        /* IMAGE */
+        .profile-img {
+            float: right;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid #2563eb;
+            margin-left: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+
+        {% if resume.image %}
+        <img src="{% if image_path %}{{ image_path }}{% else %}{{ resume.image.url }}{% endif %}" class="profile-img">
+        {% endif %}
+
+        <div class="name">{{ resume.full_name }}</div>
+
+        <div class="contact">
+            📧 {{ resume.email }} |
+            📞 {{ resume.phone }} |
+            📍 {{ resume.city }}, {{ resume.state }}
+        </div>
+
+    </div>
+
+    <!-- SKILLS -->
+    <div class="section">
+        <div class="section-title">SKILLS</div>
+        <div class="skills">
+            {{ resume.skills }}
+        </div>
+    </div>
+
+    <!-- EDUCATION -->
+    <div class="section">
+        <div class="section-title">EDUCATION</div>
+
+        {% for e in education %}
+        <div class="item">
+            <div class="item-title">{{ e.degree }}</div>
+            <div class="small">{{ e.college }} ({{ e.year }})</div>
+        </div>
+        {% empty %}
+        <p class="small">No education added</p>
+        {% endfor %}
+    </div>
+
+    <!-- EXPERIENCE -->
+    <div class="section">
+        <div class="section-title">EXPERIENCE</div>
+
+        {% for ex in experience %}
+        <div class="item">
+            <div class="item-title">{{ ex.role }} – {{ ex.company }}</div>
+            <div class="small">{{ ex.description }}</div>
+        </div>
+        {% empty %}
+        <p class="small">No experience added</p>
+        {% endfor %}
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% block title %}Contact Us - ResumeBuilder{% endblock %}
+
+{% block content %}
+
+<style>
+    /* 1. Page Wrapper */
+    .contact-section {
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 0;
+    }
+
+    /* 2. The Main Card */
+    .contact-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        /* Ensures the inner split layout stays inside rounded corners */
+    }
+
+    /* 3. Left Side: Contact Info (Dark Gradient) */
+    .contact-info-box {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #3730a3 100%);
+        color: white;
+        padding: 40px;
+        height: 100%;
+        position: relative;
+    }
+
+    .contact-info-box h3 {
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        /* Vertically align icon and text */
+        margin-bottom: 2rem;
+        font-size: 1rem;
+    }
+
+    .info-item i {
+        font-size: 1.5rem;
+        margin-right: 15px;
+        opacity: 0.8;
+    }
+
+    .social-icons a {
+        color: white;
+        font-size: 1.2rem;
+        margin-right: 15px;
+        transition: opacity 0.3s;
+        opacity: 0.7;
+    }
+
+    .social-icons a:hover {
+        opacity: 1;
+    }
+
+    /* 4. Right Side: The Form */
+    .contact-form-box {
+        padding: 40px;
+    }
+
+    .form-floating textarea {
+        height: 120px;
+    }
+
+    /* Decorative Circle on the colored side (Optional visual flair) */
+    .circle-decoration {
+        position: absolute;
+        bottom: -50px;
+        right: -50px;
+        width: 150px;
+        height: 150px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+    }
+</style>
+
+<div class="contact-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+
+                <div class="contact-card">
+                    <div class="row g-0">
+
+                        <div class="col-md-5">
+                            <div class="contact-info-box d-flex flex-column justify-content-between">
+
+                                <div>
+                                    <h3>Let's get in touch</h3>
+                                    <p class="text-white-50 mb-5">
+                                        We're open for any suggestion or just to have a chat.
+                                    </p>
+
+                                    <div class="info-item">
+                                        <i class="bi bi-geo-alt-fill"></i>
+                                        <div>
+                                            <span class="d-block fw-bold">Address:</span>
+                                            <small>198 West 21th Street, Suite 721<br>New York NY 10016</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <i class="bi bi-telephone-fill"></i>
+                                        <div>
+                                            <span class="d-block fw-bold">Phone:</span>
+                                            <small>+ 1235 2355 98</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <i class="bi bi-envelope-fill"></i>
+                                        <div>
+                                            <span class="d-block fw-bold">Email:</span>
+                                            <small>support@resumebuilder.com</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="social-icons mt-4">
+                                    <p class="mb-2 fw-bold small uppercase">Follow us</p>
+                                    <a href="#"><i class="bi bi-facebook"></i></a>
+                                    <a href="#"><i class="bi bi-twitter"></i></a>
+                                    <a href="#"><i class="bi bi-instagram"></i></a>
+                                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                                </div>
+
+                                <div class="circle-decoration"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-7">
+                            <div class="contact-form-box bg-white">
+                                <h4 class="fw-bold text-dark mb-4">Send us a message</h4>
+
+                                <form method="post" class="needs-validation" id="contactForm" novalidate>
+                                    {% csrf_token %}
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input type="text" name="name" class="form-control" id="nameInput"
+                                                    placeholder="Name" required>
+                                                <label for="nameInput">Full Name</label>
+                                                <div class="invalid-feedback">Name is required.</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input type="email" name="email" class="form-control" id="emailInput"
+                                                    placeholder="Email" required>
+                                                <label for="emailInput">Email Address</label>
+                                                <div class="invalid-feedback">Valid email required.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="subject" class="form-control" id="subjectInput"
+                                            placeholder="Subject" required>
+                                        <label for="subjectInput">Subject</label>
+                                        <div class="invalid-feedback">Please enter a subject.</div>
+                                    </div>
+
+                                    <div class="form-floating mb-4">
+                                        <textarea name="message" class="form-control" id="messageInput"
+                                            placeholder="Message" required></textarea>
+                                        <label for="messageInput">Message</label>
+                                        <div class="invalid-feedback">Please write your message.</div>
+                                    </div>
+
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-custom-register btn-lg">
+                                            Send Message <i class="bi bi-send-fill ms-2"></i>
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Standard Bootstrap Validation
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('contactForm');
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+</script>
+
+{% endblock %}

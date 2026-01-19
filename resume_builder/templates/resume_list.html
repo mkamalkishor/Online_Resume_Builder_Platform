@@ -1,0 +1,92 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+
+{% block title %}My Resumes{% endblock %}
+sasafdf
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+<!-- ===== Header Section ===== -->
+<div class="p-4 mb-5 rounded-4 text-white" style="background: linear-gradient(135deg,#4f46e5,#3b82f6);">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h2 class="fw-bold mb-1">My Resumes</h2>
+            <p class="mb-0 opacity-75">
+                Create, manage & download professional CVs
+            </p>
+        </div>
+
+        aadad <a href="{% url 'create_resume' %}" class="btn btn-light btn-lg fw-semibold shadow">
+            ➕ Create Resume
+        </a>
+    </div>
+</div>
+
+{% if resumes %}
+<div class="row g-4">
+
+    {% for r in resumes %}
+    <div class="col-md-4">
+        <div class="resume-glass card h-100 border-0">
+
+            <!-- Image -->
+            <div class="position-relative">
+                {% if r.image %}
+                <img src="{{ r.image.url }}" class="card-img-top resume-img">
+                {% else %}
+                <img src="{% static 'images/resume_default.png' %}" class="card-img-top resume-img">
+                {% endif %}
+
+                <span class="badge bg-success position-absolute top-0 end-0 m-3 px-3 py-2">
+                    Active
+                </span>
+            </div>
+
+            <!-- Body -->
+            <div class="card-body">
+                <h5 class="fw-bold mb-1">{{ r.full_name }}</h5>
+
+                <p class="text-muted small mb-2">
+                    📍 {{ r.city }}, {{ r.state }}, {{ r.country }}
+                </p>
+
+                <p class="small mb-3">
+                    <strong>Skills:</strong>
+                    {{ r.skills|default:"Not added" }}
+                </p>
+
+                <!-- Buttons -->
+                <div class="d-grid gap-2">
+
+                    <a href="#" class="btn btn-primary btn-sm">
+                        👁 View Resume
+                    </a>
+
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-outline-success btn-sm w-100">
+                            📄 PDF
+                        </a>
+                        <a href="#" class="btn btn-outline-warning btn-sm w-100">
+                            ✏ Edit
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+{% else %}
+<div class="alert alert-info p-4 rounded-4 shadow-sm">
+    <h5>No resumes yet</h5>
+    <p>Create your first resume to get started.</p>
+    <a href="{% url 'create_resume' %}" class="btn btn-primary">
+        ➕ CreResume
+    </a>
+</div>
+{% endif %}
+
+{% endblock %}

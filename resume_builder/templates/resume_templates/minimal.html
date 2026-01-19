@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ resume.full_name }}</title>
+
+    <style>
+        /* PAGE SETTINGS */
+        @page {
+            size: a4 portrait;
+            margin: 1.5cm;
+            /* Generous margins are key to minimalism */
+        }
+
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-size: 10pt;
+            /* Smaller font looks more elegant */
+            color: #222222;
+            line-height: 1.5;
+        }
+
+        /* HEADER STYLES */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .name {
+            font-size: 24pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            /* High tracking for premium look */
+            margin-bottom: 8px;
+            color: #000;
+        }
+
+        .contact-info {
+            font-size: 9pt;
+            color: #666;
+            letter-spacing: 0.5px;
+        }
+
+        .separator {
+            margin: 0 8px;
+            color: #ccc;
+        }
+
+        /* SECTION STYLES */
+        .section-title {
+            font-size: 10pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #e0e0e0;
+            /* Very subtle line */
+            padding-bottom: 5px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        /* CONTENT ENTRIES */
+        .entry-container {
+            margin-bottom: 15px;
+        }
+
+        /* Table used for Left/Right alignment of Role/Date */
+        .entry-header-table {
+            width: 100%;
+            border: none;
+            margin-bottom: 2px;
+        }
+
+        .role {
+            font-size: 11pt;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .company {
+            font-size: 10pt;
+            font-style: italic;
+            color: #444;
+        }
+
+        .date {
+            font-size: 9pt;
+            color: #666;
+            text-align: right;
+            white-space: nowrap;
+            /* Prevents date wrapping */
+        }
+
+        .description {
+            font-size: 10pt;
+            color: #444;
+            text-align: justify;
+            margin-top: 4px;
+        }
+
+        /* SKILLS SECTION */
+        .skills-container {
+            font-size: 10pt;
+            color: #444;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="name">{{ resume.full_name }}</div>
+        <div class="contact-info">
+            {{ resume.email }}
+            <span class="separator">|</span>
+            {{ resume.phone }}
+
+            {% if resume.city %}
+            <span class="separator">|</span>
+            {{ resume.city }}, {{ resume.country }}
+            {% endif %}
+        </div>
+    </div>
+
+    {% if education %}
+    <div class="section-title">Education</div>
+
+    {% for e in education %}
+    <div class="entry-container">
+        <table class="entry-header-table">
+            <tr>
+                <td class="role">{{ e.degree }}</td>
+                <td class="date">{{ e.year }}</td>
+            </tr>
+        </table>
+        <div class="company">{{ e.college }}</div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if experience %}
+    <div class="section-title">Experience</div>
+
+    {% for ex in experience %}
+    <div class="entry-container">
+        <table class="entry-header-table">
+            <tr>
+                <td class="role">{{ ex.role }}</td>
+                <td class="date">{{ ex.company }}</td>
+            </tr>
+        </table>
+
+        <div class="description">
+            {{ ex.description|linebreaksbr }}
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if resume.skills %}
+    <div class="section-title">Skills</div>
+    <div class="skills-container">
+        {{ resume.skills }}
+    </div>
+    {% endif %}
+
+</body>
+
+</html>

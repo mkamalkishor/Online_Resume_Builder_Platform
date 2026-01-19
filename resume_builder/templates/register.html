@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% block title %}Register - ResumeBuilder{% endblock %}
+
+{% block content %}
+
+<style>
+    /* Reusing the centered layout from Login for consistency */
+    .register-container {
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: 2rem;
+    }
+
+    .card-register {
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .form-floating>.form-control:focus~label {
+        color: var(--primary-color);
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.25);
+    }
+
+    /* Success/Error color overrides */
+    .was-validated .form-control:invalid {
+        border-color: #dc3545;
+    }
+
+    .was-validated .form-control:valid {
+        border-color: #198754;
+    }
+</style>
+
+<div class="register-container">
+    <div class="col-md-6 col-lg-5">
+
+        <div class="card card-register bg-white p-4 p-md-5">
+
+            <div class="text-center mb-4">
+                <h3 class="fw-bold text-dark">Create Account</h3>
+                <p class="text-muted small">Start building your professional resume today.</p>
+            </div>
+
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <form method="post" class="needs-validation" id="registerForm" novalidate>
+                {% csrf_token %}
+
+                <div class="form-floating mb-3">
+                    <input type="text" name="username" class="form-control" id="id_username" placeholder="Username"
+                        required>
+                    <label for="id_username">Username</label>
+                    <div class="invalid-feedback">
+                        Please choose a username.
+                    </div>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="email" name="email" class="form-control" id="id_email" placeholder="name@example.com"
+                        required>
+                    <label for="id_email">Email Address</label>
+                    <div class="invalid-feedback">
+                        Please enter a valid email address.
+                    </div>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="tel" name="phone" class="form-control" id="id_phone" placeholder="Phone"
+                        pattern="\d{10}" required>
+                    <label for="id_phone">Phone Number (10 digits)</label>
+                    <div class="invalid-feedback">
+                        Please enter a valid 10-digit phone number.
+                    </div>
+                </div>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="password" name="password" class="form-control" id="id_password"
+                                placeholder="Password" minlength="6" required>
+                            <label for="id_password">Password</label>
+                            <div class="invalid-feedback">
+                                Min 6 chars required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="password" name="confirm_password" class="form-control" id="id_confirm_password"
+                                placeholder="Confirm" required>
+                            <label for="id_confirm_password">Confirm Password</label>
+                            <div class="invalid-feedback" id="confirmPasswordFeedback">
+                                Passwords must match.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required>
+                    <label class="form-check-label small text-muted" for="flexCheckDefault">
+                        I agree to the <a href="#" class="text-decoration-none">Terms of Service</a> and <a href="#"
+                            class="text-decoration-none">Privacy Policy</a>.
+                    </label>
+                    <div class="invalid-feedback">
+                        You must agree before submitting.
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-custom-register w-100 btn-lg py-2">
+                    Create Account
+                </button>
+            </form>
+
+            <div class="text-center mt-4">
+                <p class="text-muted small mb-0">
+                    Already have an account?
+                    <a href="{% url 'login' %}" class="text-primary fw-bold text-decoration-none">Log in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('registerForm');
+        const passwordInput = document.getElementById('id_password');
+        const confirmInput = document.getElementById('id_confirm_password');
+        const confirmFeedback = document.getElementById('confirmPasswordFeedback');
+
+        // Function to check if passwords match
+        function checkPasswordsMatch() {
+            if (confirmInput.value && passwordInput.value !== confirmInput.value) {
+                confirmInput.setCustomValidity("Passwords do not match");
+                confirmFeedback.textContent = "Passwords do not match.";
+            } else {
+                confirmInput.setCustomValidity(""); // Clear error
+            }
+        }
+
+        // Add real-time listeners so the error goes away as they type
+        passwordInput.addEventListener('input', checkPasswordsMatch);
+        confirmInput.addEventListener('input', checkPasswordsMatch);
+
+        // Main Form Submission Listener
+        form.addEventListener('submit', function (event) {
+
+            // Run the password check one last time before submit
+            checkPasswordsMatch();
+
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            form.classList.add('was-validated');
+        }, false);
+    });
+</script>
+
+{% endblock %}

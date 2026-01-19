@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ resume.full_name }} - Resume</title>
+
+    <style>
+        /* PDF Page Settings */
+        @page {
+            size: a4 portrait;
+            margin: 0cm;
+            /* We handle margins inside the body/table */
+        }
+
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-size: 11pt;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+        }
+
+        /* Layout Table */
+        table.main-layout {
+            width: 100%;
+            height: 100%;
+            /* Ensure full height background for left col */
+            border-collapse: collapse;
+        }
+
+        /* --- Left Column Styling --- */
+        td.left-col {
+            width: 32%;
+            background-color: #2c3e50;
+            /* Professional Slate Blue */
+            color: #ffffff;
+            padding: 30px 20px;
+            vertical-align: top;
+        }
+
+        .profile-img-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            object-fit: cover;
+        }
+
+        .left-header {
+            font-size: 10pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 5px;
+            color: #ecf0f1;
+        }
+
+        .contact-item {
+            font-size: 9pt;
+            margin-bottom: 8px;
+            word-wrap: break-word;
+            /* Prevents long emails from breaking layout */
+        }
+
+        .contact-icon {
+            margin-right: 5px;
+            opacity: 0.8;
+        }
+
+        .skill-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 4px 8px;
+            margin-bottom: 6px;
+            font-size: 9pt;
+            border-radius: 4px;
+            display: inline-block;
+            /* Mimics tags */
+        }
+
+        /* --- Right Column Styling --- */
+        td.right-col {
+            width: 68%;
+            padding: 40px 30px;
+            vertical-align: top;
+            background-color: #ffffff;
+        }
+
+        .name-header {
+            font-size: 26pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+
+        .role-header {
+            font-size: 14pt;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+
+        .section-title {
+            font-size: 12pt;
+            font-weight: bold;
+            color: #2c3e50;
+            text-transform: uppercase;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 5px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        /* Content Entries */
+        .entry {
+            margin-bottom: 15px;
+        }
+
+        .entry-title {
+            font-size: 11pt;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .entry-subtitle {
+            font-size: 10pt;
+            color: #555;
+            font-style: italic;
+            margin-bottom: 4px;
+        }
+
+        .entry-date {
+            float: right;
+            font-size: 9pt;
+            color: #7f8c8d;
+        }
+
+        .entry-desc {
+            font-size: 10pt;
+            color: #444;
+            text-align: justify;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table class="main-layout">
+        <tr>
+            <td class="left-col">
+
+                {% if resume.image %}
+                <div class="profile-img-container">
+                    <img src="{% if image_path %}{{ image_path }}{% else %}{{ resume.image.url }}{% endif %}"
+                        class="profile-img">
+                </div>
+                {% endif %}
+
+                <div class="left-header">Contact</div>
+
+                {% if resume.email %}
+                <div class="contact-item">
+                    <span class="contact-icon">✉</span> {{ resume.email }}
+                </div>
+                {% endif %}
+
+                {% if resume.phone %}
+                <div class="contact-item">
+                    <span class="contact-icon">📞</span> {{ resume.phone }}
+                </div>
+                {% endif %}
+
+                {% if resume.city or resume.state %}
+                <div class="contact-item">
+                    <span class="contact-icon">📍</span> {{ resume.city }}, {{ resume.state }}
+                </div>
+                {% endif %}
+
+                {% if resume.skills %}
+                <div class="left-header">Expertise</div>
+                <div style="line-height: 1.6;">
+                    {{ resume.skills }}
+                </div>
+                {% endif %}
+
+            </td>
+
+            <td class="right-col">
+
+                <div class="name-header">{{ resume.full_name }}</div>
+                {% if education %}
+                <div class="section-title">Education</div>
+
+                {% for e in education %}
+                <div class="entry">
+                    <div class="entry-title">
+                        {{ e.degree }}
+                        <span class="entry-date">{{ e.year }}</span>
+                    </div>
+                    <div class="entry-subtitle">{{ e.college }}</div>
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                {% if experience %}
+                <div class="section-title">Professional Experience</div>
+
+                {% for ex in experience %}
+                <div class="entry">
+                    <div class="entry-title">
+                        {{ ex.role }}
+                    </div>
+                    <div class="entry-subtitle">{{ ex.company }}</div>
+
+                    {% if ex.description %}
+                    <div class="entry-desc">
+                        {{ ex.description|linebreaksbr }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                {% endif %}
+
+            </td>
+        </tr>
+    </table>
+
+</body>
+
+</html>

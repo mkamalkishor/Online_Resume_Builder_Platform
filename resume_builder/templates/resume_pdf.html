@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+
+  <style>
+    body {
+      font-family: Helvetica;
+      font-size: 12px;
+      margin: 0;
+      padding: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    /* LEFT COLUMN */
+    .left {
+      width: 30%;
+      background-color: #1e3a8a;
+      color: white;
+      padding: 18px;
+      vertical-align: top;
+    }
+
+    /* RIGHT COLUMN */
+    .right {
+      width: 70%;
+      padding: 25px;
+      vertical-align: top;
+    }
+
+    /* NAME */
+    .name {
+      font-size: 28px;
+      font-weight: bold;
+      color: #1e3a8a;
+      margin-bottom: 5px;
+    }
+
+    /* SECTION HEADERS */
+    .section-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #1e3a8a;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 4px;
+    }
+
+    /* LEFT HEADERS */
+    .left-title {
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+      padding-bottom: 4px;
+    }
+
+    /* TEXT SPACING */
+    p {
+      margin: 4px 0;
+    }
+
+    .name {
+      font-size: 28px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <table>
+    <tr>
+
+      <!-- LEFT COLUMN -->
+      <td class="left">
+
+        <!-- PROFILE IMAGE -->
+        {% if image_path %}
+        <table width="100%">
+          <tr>
+            <td align="center" style="padding-bottom:15px;">
+              <img src="{{ image_path }}" width="100" height="100" style="border-radius:50%; border:3px solid #fff;">
+            </td>
+          </tr>
+        </table>
+        {% endif %}
+
+        <!-- CONTACT -->
+        <div class="left-title">CONTACT</div>
+        <p>📧 {{ resume.email }}</p>
+        <p>📞 {{ resume.phone }}</p>
+        <p>📍 {{ resume.city }}, {{ resume.state }}</p>
+
+        <!-- SKILLS -->
+        <div class="left-title">SKILLS</div>
+        <p>{{ resume.skills }}</p>
+
+      </td>
+
+      <!-- RIGHT COLUMN -->
+      <td class="right">
+
+        <!-- NAME -->
+        <div class="name">{{ resume.full_name }}</div>
+
+        <!-- EDUCATION -->
+        <div class="section-title">EDUCATION</div>
+        {% for e in education %}
+        <p>
+          <b>{{ e.degree }}</b><br>
+          {{ e.college }} ({{ e.year }})
+        </p>
+        {% endfor %}
+
+        <!-- EXPERIENCE -->
+        <div class="section-title">EXPERIENCE</div>
+        {% for ex in experience %}
+        <p>
+          <b>{{ ex.role }}</b> – {{ ex.company }}<br>
+          {{ ex.description }}
+        </p>
+        {% endfor %}
+
+      </td>
+
+    </tr>
+  </table>
+
+</body>
+
+</html>

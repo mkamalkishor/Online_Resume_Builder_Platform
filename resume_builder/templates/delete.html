@@ -1,0 +1,31 @@
+{% extends 'dashboard_base.html' %}
+
+{% block title %}Delete Resume{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm p-4 border-0">
+    <h4 class="fw-bold text-danger mb-3">🗑 Delete Resume</h4>
+
+    <p>
+        Are you sure you want to delete
+        <strong>{{ resume.full_name }}</strong>?
+    </p>
+
+    <p class="text-muted">
+        This action <b>cannot be undone</b>.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">
+            Yes, Delete
+        </button>
+
+        <a href="{% url 'resume_list' %}" class="btn btn-secondary ms-2">
+            Cancel
+        </a>
+    </form>
+</div>
+
+{% endblock %}

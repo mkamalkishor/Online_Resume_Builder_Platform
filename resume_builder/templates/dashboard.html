@@ -1,0 +1,365 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Dashboard - ResumeBuilder{% endblock %}
+
+{% block content %}
+
+<style>
+    :root {
+        --sidebar-width: 280px;
+        --card-border-radius: 12px;
+    }
+
+    /* Layout Wrapper */
+    .dashboard-wrapper {
+        display: flex;
+        min-height: calc(100vh - 70px);
+        /* Adjust based on your top navbar height */
+        background-color: #f3f4f6;
+        /* Light gray background for contrast */
+    }
+
+    /* 1. PROFESSIONAL SIDEBAR (The UL Upgrade) */
+    .sidebar {
+        width: var(--sidebar-width);
+        background: white;
+        border-right: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 2rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* User Profile in Sidebar */
+    .user-profile-mini {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .avatar-circle {
+        width: 48px;
+        height: 48px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-right: 12px;
+    }
+
+    /* The Navigation UL */
+    .nav-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-item {
+        margin-bottom: 0.5rem;
+    }
+
+    .nav-link-custom {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        color: #4b5563;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .nav-link-custom i {
+        font-size: 1.2rem;
+        margin-right: 12px;
+        color: #9ca3af;
+        transition: color 0.2s;
+    }
+
+    .nav-link-custom:hover {
+        background-color: #eef2ff;
+        /* Very light indigo */
+        color: var(--primary-color);
+    }
+
+    .nav-link-custom:hover i {
+        color: var(--primary-color);
+    }
+
+    /* Active State (You can add logic to apply this class) */
+    .nav-link-custom.active {
+        background-color: #eef2ff;
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+
+    .nav-link-custom.active i {
+        color: var(--primary-color);
+    }
+
+    /* Logout Button specifically */
+    .btn-logout {
+        margin-top: auto;
+        /* Pushes to bottom */
+        color: #ef4444 !important;
+    }
+
+    .btn-logout:hover {
+        background-color: #fef2f2 !important;
+    }
+
+    /* 2. MAIN CONTENT AREA */
+    .main-content {
+        flex: 1;
+        padding: 2rem;
+        overflow-y: auto;
+    }
+
+    /* Hero Card */
+    .hero-card {
+        background: linear-gradient(135deg, #4F46E5 0%, #818cf8 100%);
+        /* Indigo Gradient */
+        color: white;
+        border-radius: var(--card-border-radius);
+        border: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-card h2 {
+        font-weight: 800;
+    }
+
+    .hero-card p {
+        opacity: 0.9;
+    }
+
+    /* Glass effect button on hero */
+    .btn-glass {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        font-weight: 600;
+    }
+
+    .btn-glass:hover {
+        background: rgba(255, 255, 255, 0.3);
+        color: white;
+    }
+
+    /* Stat Cards */
+    .stat-card {
+        border: none;
+        border-radius: var(--card-border-radius);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Table Styles */
+    .table-custom thead th {
+        background-color: #f9fafb;
+        color: #6b7280;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+</style>
+
+<div class="dashboard-wrapper">
+
+    <nav class="sidebar d-none d-lg-flex">
+        <div class="user-profile-mini">
+            <div class="avatar-circle">
+                {{ request.user.username|slice:":1"|upper }}
+            </div>
+            <div style="overflow: hidden;">
+                <h6 class="mb-0 fw-bold text-truncate">{{ request.user.get_full_name|default:request.user.username }}
+                </h6>
+                <small class="text-muted text-truncate d-block">{{ request.user.email }}</small>
+            </div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link-custom active">
+                    <i class="bi bi-grid-fill"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'create_resume' %}" class="nav-link-custom">
+                    <i class="bi bi-plus-circle-fill"></i> Create Resume
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'resume_list' %}" class="nav-link-custom">
+                    <i class="bi bi-file-earmark-text-fill"></i> My Resumes
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link-custom">
+                    <i class="bi bi-gear-fill"></i> Settings
+                </a>
+            </li>
+
+            <li class="nav-item mt-auto">
+                <a href="{% url 'logout' %}" class="nav-link-custom btn-logout">
+                    <i class="bi bi-box-arrow-right"></i> Sign Out
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <div class="container-fluid">
+
+            <div class="card hero-card p-4 p-lg-5 mb-4 shadow-sm">
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <h2 class="mb-2">Welcome back, {{ request.user.first_name|default:"Creator" }}! 👋</h2>
+                        <p class="mb-4 text-white-50">
+                            Your career journey continues here. You have completed <strong>75%</strong> of your latest
+                            profile.
+                        </p>
+                        <div class="d-flex gap-3">
+                            <a href="{% url 'create_resume' %}"
+                                class="btn btn-light text-primary fw-bold px-4 shadow-sm">
+                                <i class="bi bi-plus-lg me-2"></i>Create Resume
+                            </a>
+                            <a href="#" class="btn btn-glass px-4">
+                                View Templates
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 d-none d-lg-block text-end">
+                        <i class="bi bi-file-earmark-richtext text-white opacity-25" style="font-size: 8rem;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-4">
+
+                <div class="col-md-4">
+                    <div class="card stat-card p-3 h-100 bg-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <p class="text-muted mb-1 small uppercase fw-bold">Total Resumes</p>
+                                    <h3 class="fw-bold text-dark">{{ resume_count }}</h3>
+                                </div>
+                                <div class="icon-box bg-primary bg-opacity-10 text-primary">
+                                    <i class="bi bi-files"></i>
+                                </div>
+                            </div>
+                            <small class="text-success fw-bold"><i class="bi bi-arrow-up-short"></i> Active</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card stat-card p-3 h-100 bg-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <p class="text-muted mb-1 small uppercase fw-bold">Downloads</p>
+                                    <h3 class="fw-bold text-dark">24</h3>
+                                </div>
+                                <div class="icon-box bg-success bg-opacity-10 text-success">
+                                    <i class="bi bi-download"></i>
+                                </div>
+                            </div>
+                            <small class="text-muted">Total PDF Exports</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card stat-card p-3 h-100 bg-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <p class="text-muted mb-1 small uppercase fw-bold">Profile Strength</p>
+                                    <h3 class="fw-bold text-dark">High</h3>
+                                </div>
+                                <div class="icon-box bg-warning bg-opacity-10 text-warning">
+                                    <i class="bi bi-lightning-charge-fill"></i>
+                                </div>
+                            </div>
+                            <div class="progress mt-2" style="height: 6px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div
+                    class="card-header bg-white border-bottom-0 py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold">Recent Resumes</h5>
+                    <a href="{% url 'resume_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-custom table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="ps-4">Resume Title</th>
+                                <th>Date Created</th>
+                                <th>Status</th>
+                                <th class="text-end pe-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-light rounded p-2 me-3">
+                                            <i class="bi bi-file-text text-primary fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold">Software Engineer CV</h6>
+                                            <small class="text-muted">ID: #4923</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-muted">Jan 15, 2026</td>
+                                <td><span
+                                        class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">Completed</span>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <a href="#" class="btn btn-sm btn-light border me-1"><i
+                                            class="bi bi-pencil"></i></a>
+                                    <a href="#" class="btn btn-sm btn-light border"><i class="bi bi-download"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

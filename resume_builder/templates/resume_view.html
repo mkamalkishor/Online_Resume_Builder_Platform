@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ resume.full_name }}</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 30px;
+        }
+
+        .resume {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            display: grid;
+            grid-template-columns: 30% 70%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* LEFT */
+        .left {
+            background: #1e3a8a;
+            color: #fff;
+            padding: 30px;
+        }
+
+        .left img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        .left h3 {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 5px;
+            margin-top: 25px;
+        }
+
+        /* RIGHT */
+        .right {
+            padding: 30px;
+        }
+
+        .right h1 {
+            margin: 0;
+            color: #1e3a8a;
+        }
+
+        .section {
+            margin-top: 25px;
+        }
+
+        .section h3 {
+            color: #1e3a8a;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="resume">
+
+        <!-- LEFT COLUMN -->
+        <div class="left">
+            {% if resume.image %}
+            <img src="{{ resume.image.url }}">
+            {% endif %}
+
+            <h3>Contact</h3>
+            <p>{{ resume.email }}</p>
+            <p>{{ resume.phone }}</p>
+            <p>{{ resume.city }}, {{ resume.state }}</p>
+
+            <h3>Skills</h3>
+            <p>{{ resume.skills }}</p>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="right">
+            <h1>{{ resume.full_name }}</h1>
+
+            <div class="section">
+                <h3>Education</h3>
+                {% for e in education %}
+                <p><strong>{{ e.degree }}</strong> – {{ e.college }} ({{ e.year }})</p>
+                {% endfor %}
+            </div>
+
+            <div class="section">
+                <h3>Experience</h3>
+                {% for ex in experience %}
+                <p>
+                    <strong>{{ ex.role }}</strong> – {{ ex.company }}<br>
+                    {{ ex.description }}
+                </p>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

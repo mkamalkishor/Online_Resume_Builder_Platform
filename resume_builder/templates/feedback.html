@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% block title %}Feedback - ResumeBuilder{% endblock %}
+
+{% block content %}
+
+<style>
+    /* Section Styling */
+    .feedback-section {
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+        padding: 40px 0;
+    }
+
+    /* Left Side Text Styling */
+    .feedback-text h1 {
+        font-weight: 800;
+        color: #111827;
+        font-size: 2.5rem;
+    }
+
+    .feedback-text p {
+        font-size: 1.1rem;
+        color: #6b7280;
+        line-height: 1.6;
+    }
+
+    /* Card Styling */
+    .card-feedback {
+        border: none;
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    /* Star Rating Widget Styles */
+    .star-rating {
+        display: flex;
+        flex-direction: row-reverse;
+        /* Allows hover logic to work easily with CSS */
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .star-rating input {
+        display: none;
+        /* Hide actual radio buttons */
+    }
+
+    .star-rating label {
+        font-size: 2rem;
+        color: #d1d5db;
+        /* Gray by default */
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    /* Lighting up stars on hover and selection */
+    .star-rating input:checked~label,
+    .star-rating label:hover,
+    .star-rating label:hover~label {
+        color: #fbbf24;
+        /* Amber/Gold color */
+    }
+
+    .form-floating textarea {
+        height: 150px;
+        /* Taller text area by default */
+    }
+</style>
+
+<div class="feedback-section">
+    <div class="container">
+        <div class="row align-items-center justify-content-center g-5">
+
+            <div class="col-lg-5 d-none d-lg-block feedback-text">
+                <span
+                    class="badge bg-primary bg-opacity-10 text-primary mb-3 px-3 py-2 rounded-pill fw-bold">Feedback</span>
+                <h1>We'd love to hear from you.</h1>
+                <p class="mb-4">
+                    Your feedback helps us build a better Resume Builder for everyone.
+                    Whether you found a bug or just want to say hi, let us know!
+                </p>
+
+                <div class="d-flex align-items-center gap-3 mt-5">
+                    <div class="bg-white p-3 rounded-circle shadow-sm">
+                        <i class="bi bi-envelope-heart-fill text-danger fs-3"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-0">Direct Support</h6>
+                        <small class="text-muted">help@resumebuilder.com</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card card-feedback bg-white p-4 p-md-5">
+
+                    <div class="d-lg-none text-center mb-4">
+                        <h2 class="fw-bold">Send Feedback</h2>
+                    </div>
+
+                    <form method="post" class="needs-validation" id="feedbackForm" novalidate>
+                        {% csrf_token %}
+
+                        <div class="text-center mb-4">
+                            <p class="text-muted small fw-bold uppercase mb-2">HOW WAS YOUR EXPERIENCE?</p>
+                            <div class="star-rating">
+                                <input type="radio" id="star5" name="rating" value="5" required><label for="star5"
+                                    title="Excellent"><i class="bi bi-star-fill"></i></label>
+                                <input type="radio" id="star4" name="rating" value="4"><label for="star4"
+                                    title="Good"><i class="bi bi-star-fill"></i></label>
+                                <input type="radio" id="star3" name="rating" value="3"><label for="star3"
+                                    title="Okay"><i class="bi bi-star-fill"></i></label>
+                                <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="Bad"><i
+                                        class="bi bi-star-fill"></i></label>
+                                <input type="radio" id="star1" name="rating" value="1"><label for="star1"
+                                    title="Terrible"><i class="bi bi-star-fill"></i></label>
+                            </div>
+                            <div class="invalid-feedback text-center d-block" id="starError" style="opacity: 0;">
+                                Please select a rating.
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="text" name="fullname" class="form-control" id="id_name" placeholder="Your Name"
+                                required>
+                            <label for="id_name">Your Name</label>
+                            <div class="invalid-feedback">
+                                Please provide your name.
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <textarea name="message" class="form-control" id="id_message"
+                                placeholder="Leave a comment here" required></textarea>
+                            <label for="id_message">Your Feedback</label>
+                            <div class="invalid-feedback">
+                                Please write your feedback message.
+                            </div>
+                        </div>
+
+                        <button class="btn btn-custom-register w-100 btn-lg" type="submit">
+                            Submit Feedback <i class="bi bi-send-fill ms-2 small"></i>
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Validation Script
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('feedbackForm');
+        const starError = document.getElementById('starError');
+        const starInputs = document.querySelectorAll('input[name="rating"]');
+
+        form.addEventListener('submit', function (event) {
+            let isRatingSelected = false;
+
+            // Check if any star is selected
+            starInputs.forEach(input => {
+                if (input.checked) isRatingSelected = true;
+            });
+
+            if (!form.checkValidity() || !isRatingSelected) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                // Show custom error for stars if none selected
+                if (!isRatingSelected) {
+                    starError.style.opacity = '1';
+                } else {
+                    starError.style.opacity = '0';
+                }
+            } else {
+                starError.style.opacity = '0';
+            }
+
+            form.classList.add('was-validated');
+        }, false);
+
+        // Hide star error immediately when a star is clicked
+        starInputs.forEach(input => {
+            input.addEventListener('change', () => {
+                starError.style.opacity = '0';
+            });
+        });
+    });
+</script>
+
+{% endblock %}

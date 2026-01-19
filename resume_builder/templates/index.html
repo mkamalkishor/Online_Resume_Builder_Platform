@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block title %}Home - Create Your Professional Resume{% endblock %}
+
+{% block content %}
+
+<style>
+    /* Make the main headline bigger and heavier */
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 800;
+        line-height: 1.2;
+        color: #111827;
+        /* Very dark grey/black */
+    }
+
+    /* Make the subtitle readable */
+    .hero-lead {
+        font-size: 1.25rem;
+        color: #4b5563;
+        /* Medium grey */
+        font-weight: 400;
+    }
+
+    /* Style the image to look like a modern app screenshot */
+    .hero-image-container img {
+        border-radius: 20px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        /* Soft, deep shadow */
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+    }
+
+    /* Subtle hover effect on the image */
+    .hero-image-container img:hover {
+        transform: translateY(-5px);
+    }
+
+    /* A gradient text effect for emphasis */
+    .highlight-text {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #818cf8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+
+    /* Trust badges area */
+    .trust-badges {
+        font-size: 0.9rem;
+        color: #6b7280;
+        font-weight: 500;
+    }
+</style>
+
+<section class="py-5 my-5">
+    <div class="row align-items-center gy-5">
+
+        <div class="col-lg-6 order-2 order-lg-1">
+            <h1 class="hero-title mb-4">
+                Build a resume that <br>
+                <span class="highlight-text">gets you hired.</span>
+            </h1>
+            <p class="hero-lead mb-5">
+                Stop struggling with Word documents. Create professional, ATS-friendly resumes in minutes with our live
+                editor and instant PDF download.
+            </p>
+
+            <div class="d-flex flex-column flex-sm-row gap-3">
+                <a href="{% url 'register' %}" class="btn btn-custom-register btn-lg px-5 py-3">
+                    Build My Resume Now <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+                <a href="{% url 'about' %}"
+                    class="btn btn-outline-secondary btn-lg px-4 py-3 rounded-pill border-2 fw-semibold">
+                    Learn More
+                </a>
+            </div>
+
+            <div class="trust-badges mt-5 pt-3 border-top">
+                <div class="d-flex align-items-center">
+                    <div class="d-flex me-3">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                    </div>
+                    <span>Trusted by professionals worldwide</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 order-1 order-lg-2 mb-5 mb-lg-0">
+            <div class="hero-image-container p-3">
+                <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                    alt="Resume Builder Dashboard Preview" class="img-fluid">
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="py-5 bg-white rounded-4 shadow-sm px-4">
+    <div class="row text-center g-4">
+        <div class="col-md-4">
+            <div class="mb-3">
+                <i class="bi bi-lightning-charge-fill fs-2" style="color: var(--primary-color);"></i>
+            </div>
+            <h5 class="fw-bold">Fast & Easy</h5>
+            <p class="text-muted">Intuitive editor designed to save you time. No design skills needed.</p>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-3">
+                <i class="bi bi-file-earmark-pdf-fill fs-2" style="color: var(--primary-color);"></i>
+            </div>
+            <h5 class="fw-bold">Instant PDF</h5>
+            <p class="text-muted">Download high-quality, ATS-optimized PDFs ready for applications.</p>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-3">
+                <i class="bi bi-shield-check-fill fs-2" style="color: var(--primary-color);"></i>
+            </div>
+            <h5 class="fw-bold">Secure Data</h5>
+            <p class="text-muted">Your personal information is encrypted and safe with us.</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
